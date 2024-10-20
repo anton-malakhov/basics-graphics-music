@@ -35,19 +35,20 @@ module tm1638_registers
     ////////////// TM1563 data /////////////////
 
     // HEX registered
-    logic [w_seg - 1:0] r_hex[w_digit];
+    logic [0:w_digit-1][w_seg - 1:0] r_hex;
 
     always @( posedge clk )
     begin
-        for (int i = 0; i < $bits (digit); i++)
-            if (rst)
-                r_hex[i] <= r_init[i];
-            else if(digit == 'b1<<i)
-                r_hex[i] <= hgfedcba;
+        if (rst)
+            r_hex <= r_init;
+        else
+            for (int i = 0; i < $bits (digit); i++)
+                if(digit == 'b1<<i)
+                    r_hex[i] <= hgfedcba;
     end
 
     // HEX combinational
-    wire [w_seg - 1:0] c_hex[w_digit];
+    wire [0:w_digit-1][w_seg - 1:0] c_hex;
 
     genvar i;
 
