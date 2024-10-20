@@ -14,9 +14,9 @@ Copyright Contributors to the basics-graphics-music project.
 
 module tm1638_registers
 # (
-    parameter                     w_digit = 8,
-                                  w_seg   = 8,
-              logic [w_seg - 1:0] r_init[w_digit] = '{default:0}
+    parameter                      w_digit = 8,
+                                   w_seg   = 8,
+    logic [0:w_digit-1][w_seg-1:0] r_init  = '0
 )
 (
     input                         clk,
@@ -39,12 +39,11 @@ module tm1638_registers
 
     always @( posedge clk )
     begin
-        if (rst)
-            r_hex <= r_init;
-        else
-            for (int i = 0; i < $bits (digit); i++)
-                if(digit == 'b1<<i)
-                    r_hex[i] <= hgfedcba;
+        for (int i = 0; i < $bits (digit); i++)
+            if (rst)
+                r_hex[i] <= r_init[i];
+            else if(digit == 'b1<<i)
+                r_hex[i] <= hgfedcba;
     end
 
     // HEX combinational

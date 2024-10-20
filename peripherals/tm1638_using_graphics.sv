@@ -72,34 +72,34 @@ module virtual_tm1638_using_graphics
 
     wire disp [dispx][dispy];
 
-    `define DISPLAY(x, y) disp[(w_digit-1-i)*4+x][y]
+    `define SEGMENT(x, y) disp[(w_digit-1-i)*4+x][y]
     genvar i;
     generate
         for (i = 0; i < $bits(ledr); i++) begin : leds_display
-            assign `DISPLAY(1, 0) = ledr[i];
-            assign `DISPLAY(2, 0) = ledr[i];
-            assign `DISPLAY(3, 0) = ledr[i];
+            assign `SEGMENT(1, 0) = ledr[i];
+            assign `SEGMENT(2, 0) = ledr[i];
+            assign `SEGMENT(3, 0) = ledr[i];
         end
         for (i = 1; i < dispx-1; i++) begin : separator_display
             assign disp[i][1] = '1;
         end
         for (i = 0; i < w_keys; i++) begin : keys_display
-            assign `DISPLAY(1, 2) = keys[i];
-            assign `DISPLAY(2, 2) = keys[i];
-            assign `DISPLAY(3, 2) = keys[i];
+            assign `SEGMENT(1, 2) = keys[i];
+            assign `SEGMENT(2, 2) = keys[i];
+            assign `SEGMENT(3, 2) = keys[i];
         end
         for (i = 0; i < w_digit; i++) begin : segments_display
-            assign `DISPLAY(2, 3) = hex[i][0]; // a     '{0,0,0,0},
-            assign `DISPLAY(1, 4) = hex[i][5]; // f     '{0,0,a,0},
-            assign `DISPLAY(3, 4) = hex[i][1]; // b     '{0,f,0,b},
-            assign `DISPLAY(2, 5) = hex[i][6]; // g     '{0,0,g,0},
-            assign `DISPLAY(1, 6) = hex[i][4]; // e     '{0,e,0,c},
-            assign `DISPLAY(3, 6) = hex[i][2]; // c     '{0,0,d,0,h}};
-            assign `DISPLAY(2, 7) = hex[i][3]; // d
-            assign `DISPLAY(4, 7) = hex[i][7]; // h
+            assign `SEGMENT(2, 3) = hex[i][0]; // a     '{0,0,0,0},
+            assign `SEGMENT(1, 4) = hex[i][5]; // f     '{0,0,a,0},
+            assign `SEGMENT(3, 4) = hex[i][1]; // b     '{0,f,0,b},
+            assign `SEGMENT(2, 5) = hex[i][6]; // g     '{0,0,g,0},
+            assign `SEGMENT(1, 6) = hex[i][4]; // e     '{0,e,0,c},
+            assign `SEGMENT(3, 6) = hex[i][2]; // c     '{0,0,d,0,h}};
+            assign `SEGMENT(2, 7) = hex[i][3]; // d
+            assign `SEGMENT(4, 7) = hex[i][7]; // h
         end
     endgenerate
-    `undef DISPLAY
+    `undef SEGMENT
 
     logic [w_x-1:0] cx, dx; // cell and display x
     logic [w_y-1:0] cy, dy; // cell and display y
